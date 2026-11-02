@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WIN GRAM</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#101116;color:white;
+ font-family:Arial,sans-serif;padding:18px;
+}
+header{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:25px;font-weight:900;color:#a78bfa}
+.balance{background:#292a32;padding:12px 18px;border-radius:18px}
+h2{margin-top:30px}
+.hero{
+ background:linear-gradient(120deg,#073b60,#a33b18);
+ border-radius:22px;padding:24px 16px;text-align:center;
+}
+.hero h1{font-size:30px}
+.teams{display:flex;gap:12px;margin-top:20px}
+.team{
+ flex:1;padding:22px 8px;border-radius:20px;
+ text-align:center;font-size:23px;font-weight:bold;
+ border:2px solid transparent;
+}
+.ice{background:#123e58;color:#64d8ff}
+.fire{background:#542317;color:#ff9b50}
+button{
+ border:0;border-radius:15px;padding:15px;
+ font-size:17px;font-weight:bold;color:white;
+ background:#7652dc;width:100%;margin-top:18px;
+}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.card{
+ background:#24252d;border-radius:20px;
+ padding:22px 12px;text-align:center;
+ min-height:125px;
+}
+.card b{font-size:19px}
+.card p{color:#aaa;font-size:13px}
+.status{color:#aaa;text-align:center;margin-top:18px}
+footer{display:flex;justify-content:space-around;
+ margin-top:35px;color:#aaa}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo">✦ WIN GRAM</div>
+ <div class="balance">💎 0.000 TON</div>
+</header>
+
+<div class="hero">
+ <h1>🧊 ICE VS FIRE 🔥</h1>
+ <p>Choose your team. Fight. Win.</p>
+ <div class="teams">
+  <div class="team ice">❄️<br>ICE</div>
+  <div class="team fire">🔥<br>FIRE</div>
+ </div>
+ <button onclick="play()">⚔️ PLAY NOW</button>
+</div>
+
+<h2>🔥 GAME CENTER</h2>
+<div class="cards">
+ <div class="card">
+  <b>⚔️ PvP HUB</b>
+  <p>Fight against players</p>
+ </div>
+ <div class="card">
+  <b>🎮 PLAY HUB</b>
+  <p>Explore games</p>
+ </div>
+ <div class="card">
+  <b>🏆 LEADERBOARD</b>
+  <p>Top players</p>
+ </div>
+ <div class="card">
+  <b>👥 FRIENDS</b>
+  <p>Invite your friends</p>
+ </div>
+</div>
+
+<div class="status" id="status">
+ Welcome to WIN GRAM!
+</div>
+
+<footer>
+ <span>🏠 Home</span>
+ <span>⚔️ Battle</span>
+ <span>🏆 Rank</span>
+ <span>👤 Profile</span>
+</footer>
+
+<script>
+const tg=window.Telegram?.WebApp;
+if(tg){tg.ready();tg.expand();}
+
+function play(){
+ document.getElementById("status").textContent=
+ "⚔️ PvP battle interface is coming soon!";
+ if(tg)tg.HapticFeedback.impactOccurred("medium");
+}
+</script>
+</body>
+  </html>
