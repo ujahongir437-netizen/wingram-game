@@ -30,6 +30,20 @@ header span{color:#42caff}
  border-radius:16px;
 }
 .rocket{
+ position:absolute;
+ bottom:12px;
+ left:12%;
+ font-size:52px;
+ transform:rotate(-35deg);
+ filter:drop-shadow(0 0 12px #39bfff);
+ transition:left .1s linear,bottom .1s linear;
+ animation:rocketGlow .5s infinite alternate;
+}
+
+@keyframes rocketGlow{
+ from{filter:drop-shadow(0 0 8px #39bfff)}
+ to{filter:drop-shadow(0 0 25px #fff)}
+}
  position:absolute;bottom:12px;left:12%;
  font-size:48px;
  transform:rotate(-35deg);
