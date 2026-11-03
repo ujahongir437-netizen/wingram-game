@@ -1,49 +1,32 @@
+
 <!DOCTYPE html>
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WIN GRAM</title>
+<title>WIN GRAM TvT</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;background:#101116;color:white;
- font-family:Arial,sans-serif;padding:18px;
-}
-header{display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:25px;font-weight:900;color:#a78bfa}
-.balance{background:#292a32;padding:12px 18px;border-radius:18px}
-h2{margin-top:30px}
-.hero{
- background:linear-gradient(120deg,#073b60,#a33b18);
- border-radius:22px;padding:24px 16px;text-align:center;
-}
-.hero h1{font-size:30px}
-.teams{display:flex;gap:12px;margin-top:20px}
-.team{
- flex:1;padding:22px 8px;border-radius:20px;
- text-align:center;font-size:23px;font-weight:bold;
- border:2px solid transparent;
-}
+body{margin:0;padding:18px;background:#0b1020;color:white;font-family:Arial;text-align:center}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.logo{font-size:24px;font-weight:900;color:#a78bfa}
+.balance{background:#202a40;padding:12px;border-radius:14px}
+h1{font-size:30px}
+.panel{background:#151f35;border:1px solid #293a59;border-radius:20px;padding:20px;margin:16px 0}
+.teams{display:flex;gap:12px}
+.team{flex:1;padding:25px 5px;border-radius:16px;font-size:23px;font-weight:bold;border:3px solid transparent;cursor:pointer}
 .ice{background:#123e58;color:#64d8ff}
 .fire{background:#542317;color:#ff9b50}
-button{
- border:0;border-radius:15px;padding:15px;
- font-size:17px;font-weight:bold;color:white;
- background:#7652dc;width:100%;margin-top:18px;
-}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:13px}
-.card{
- background:#24252d;border-radius:20px;
- padding:22px 12px;text-align:center;
- min-height:125px;
-}
-.card b{font-size:19px}
-.card p{color:#aaa;font-size:13px}
-.status{color:#aaa;text-align:center;margin-top:18px}
-footer{display:flex;justify-content:space-around;
- margin-top:35px;color:#aaa}
+.selected{border-color:white;box-shadow:0 0 15px #fff6}
+button{width:100%;padding:16px;border:0;border-radius:13px;background:#8055ed;color:white;font-size:17px;font-weight:bold;margin-top:15px}
+button:disabled{opacity:.4}
+#timer{font-size:65px;font-weight:bold;color:#51e5ff;margin:15px}
+#status{font-size:18px;color:#ffd36b;min-height:28px}
+.counts{display:flex;justify-content:space-around;font-size:19px;margin-top:20px}
+#battle{display:none}
+#result{font-size:25px;font-weight:bold;margin:20px}
+.small{color:#9ca9c2;font-size:13px}
 </style>
 </head>
 <body>
@@ -52,56 +35,94 @@ footer{display:flex;justify-content:space-around;
  <div class="balance">💎 0.000 TON</div>
 </header>
 
-<div class="hero">
- <h1>🧊 ICE VS FIRE 🔥</h1>
- <p>Choose your team. Fight. Win.</p>
+<h1>❄️ ICE VS FIRE 🔥</h1>
+<p class="small">CHOOSE YOUR TEAM • FIGHT • WIN</p>
+
+<div class="panel" id="lobby">
+ <h2>Jamoangni tanla</h2>
  <div class="teams">
-  <div class="team ice">❄️<br>ICE</div>
-  <div class="team fire">🔥<br>FIRE</div>
+  <div class="team ice" id="ice" onclick="choose('ICE')">❄️<br>ICE</div>
+  <div class="team fire" id="fire" onclick="choose('FIRE')">🔥<br>FIRE</div>
  </div>
- <button onclick="play()">⚔️ PLAY NOW</button>
+ <div class="counts">
+  <div>❄️ ICE: <b id="iceCount">0</b></div>
+  <div>🔥 FIRE: <b id="fireCount">0</b></div>
+ </div>
+ <button id="join" onclick="joinGame()" disabled>JOIN BATTLE</button>
+ <div id="status">Avval jamoani tanlang</div>
+ <div id="timer">15</div>
+ <p class="small">Jang boshlanishigacha qolgan vaqt</p>
 </div>
 
-<h2>🔥 GAME CENTER</h2>
-<div class="cards">
- <div class="card">
-  <b>⚔️ PvP HUB</b>
-  <p>Fight against players</p>
+<div class="panel" id="battle" >
+ <h2>⚔️ BATTLE STARTED!</h2>
+ <div class="counts">
+  <div>❄️ ICE: <b id="battleIce">0</b></div>
+  <div>🔥 FIRE: <b id="battleFire">0</b></div>
  </div>
- <div class="card">
-  <b>🎮 PLAY HUB</b>
-  <p>Explore games</p>
- </div>
- <div class="card">
-  <b>🏆 LEADERBOARD</b>
-  <p>Top players</p>
- </div>
- <div class="card">
-  <b>👥 FRIENDS</b>
-  <p>Invite your friends</p>
- </div>
+ <div id="result">Jang davom etmoqda...</div>
+ <button onclick="location.reload()">YANGI JANG</button>
 </div>
 
-<div class="status" id="status">
- Welcome to WIN GRAM!
-</div>
-
-<footer>
- <span>🏠 Home</span>
- <span>⚔️ Battle</span>
- <span>🏆 Rank</span>
- <span>👤 Profile</span>
-</footer>
+<p class="small">WIN GRAM • TEAM BATTLE</p>
 
 <script>
 const tg=window.Telegram?.WebApp;
 if(tg){tg.ready();tg.expand();}
 
-function play(){
- document.getElementById("status").textContent=
- "⚔️ PvP battle interface is coming soon!";
- if(tg)tg.HapticFeedback.impactOccurred("medium");
+let selected='';
+let joined=false;
+let ice=0,fire=0;
+let seconds=15;
+let finished=false;
+
+function choose(team){
+ if(joined||finished)return;
+ selected=team;
+ document.getElementById('ice').classList.toggle('selected',team==='ICE');
+ document.getElementById('fire').classList.toggle('selected',team==='FIRE');
+ document.getElementById('join').disabled=false;
+ document.getElementById('status').textContent=team+' jamoasi tanlandi!';
+}
+
+function joinGame(){
+ if(!selected||joined||finished)return;
+ joined=true;
+ if(selected==='ICE')ice++;
+ else fire++;
+ document.getElementById('iceCount').textContent=ice;
+ document.getElementById('fireCount').textContent=fire;
+ document.getElementById('join').disabled=true;
+ document.getElementById('status').textContent='Jamoaga qo‘shildingiz! Jang kutilmoqda.';
+}
+
+const countdown=setInterval(()=>{
+ if(finished)return;
+ seconds--;
+ document.getElementById('timer').textContent=seconds;
+ if(seconds<=0){
+  clearInterval(countdown);
+  startBattle();
+ }
+},1000);
+
+function startBattle(){
+ finished=true;
+ document.getElementById('lobby').style.display='none';
+ document.getElementById('battle').style.display='block';
+
+ // Faqat mahalliy demo natijasi.
+ let demoIce=ice+Math.floor(Math.random()*10)+1;
+ let demoFire=fire+Math.floor(Math.random()*10)+1;
+
+ document.getElementById('battleIce').textContent=demoIce;
+ document.getElementById('battleFire').textContent=demoFire;
+
+ let winner=demoIce===demoFire?'DURRANG!':demoIce>demoFire?'❄️ ICE G‘OLIB!':'🔥 FIRE G‘OLIB!';
+ document.getElementById('result').textContent=winner;
+ if(tg)tg.HapticFeedback.impactOccurred('heavy');
 }
 </script>
 </body>
-  </html>
+ </html>
+ 
