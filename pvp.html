@@ -79,7 +79,8 @@ header span{color:#6bcaff}
 .ball{
  position:absolute;
  top:50%;
- left:50%;
+ left:var(--ball-position, 50%);
+transition:left 1s ease;
  width:34px;
  height:34px;
  border-radius:50%;
@@ -208,6 +209,10 @@ function join(team){
  }
 
  chosen=team;
+ document.querySelector(".ball").style.setProperty(
+ "--ball-position",
+ team==="ICE" ? "25%" : "75%"
+);
 
  if(team==="ICE"){
   ice++;
