@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WIN GRAM PvP</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:20px;background:#090d19;color:white;font-family:Arial;text-align:center}
+header{font-size:32px;font-weight:900;margin:20px}
+header span{color:#6bcaff}
+.sub{color:#9ba8bd;font-size:12px;letter-spacing:3px}
+.arena{margin:35px auto;padding:22px 12px;background:#151c2e;border:1px solid #303b55;border-radius:22px}
+.teams{display:flex;gap:12px}
+.team{width:50%;padding:20px 5px;border-radius:16px;font-size:22px;font-weight:bold}
+.ice{background:linear-gradient(140deg,#123e6b,#39bfff)}
+.fire{background:linear-gradient(140deg,#702018,#ff5a32)}
+.count{font-size:13px;margin-top:10px}
+.line{height:8px;background:#344057;border-radius:20px;margin:35px 0;position:relative}
+.ball{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;background:white;box-shadow:0 0 20px #fff}
+.timer{font-size:45px;font-weight:bold;margin:20px}
+button{width:100%;border:0;border-radius:14px;padding:17px;margin-top:12px;font-size:17px;font-weight:bold;color:white}
+.status{color:#aebbd1;margin:20px 0;min-height:24px}
+</style>
+</head>
+<body>
+<header>WIN <span>GRAM</span></header>
+<div class="sub">ICE VS FIRE • PVP ARENA</div>
+
+<div class="arena">
+<div class="teams">
+<div class="team ice">❄️ ICE<div class="count" id="iceCount">0 PLAYERS</div></div>
+<div class="team fire">🔥 FIRE<div class="count" id="fireCount">0 PLAYERS</div></div>
+</div>
+<div class="line"><div class="ball"></div></div>
+<div class="timer" id="timer">15</div>
+<div class="sub">BATTLE COUNTDOWN</div>
+</div>
+
+<button onclick="join('ICE')" style="background:#168dff">❄️ JOIN ICE</button>
+<button onclick="join('FIRE')" style="background:#ed4b30">🔥 JOIN FIRE</button>
+<div class="status" id="status">Jamoangni tanla!</div>
+
+<script>
+let ice=0,fire=0,chosen="";
+let remaining=15;
+
+function join(team){
+ if(chosen){
+  document.getElementById("status").textContent="Sen allaqachon jamoa tanlagansan!";
+  return;
+ }
+ chosen=team;
+ if(team==="ICE")ice++;else fire++;
+ document.getElementById("iceCount").textContent=ice+" PLAYERS";
+ document.getElementById("fireCount").textContent=fire+" PLAYERS";
+ document.getElementById("status").textContent=team+" jamoasiga qo‘shilding!";
+}
+
+const timer=setInterval(()=>{
+ remaining--;
+ document.getElementById("timer").textContent=remaining;
+ if(remaining<=0){
+  clearInterval(timer);
+  document.getElementById("status").textContent="DEMO JANG YAKUNLANDI!";
+ }
+},1000);
+</script>
+</body>
+</html>
