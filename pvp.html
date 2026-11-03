@@ -5,82 +5,244 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>WIN GRAM PvP</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;padding:20px;background:#090d19;color:white;font-family:Arial;text-align:center}
-header{font-size:32px;font-weight:900;margin:20px}
+
+body{
+ margin:0;
+ padding:20px;
+ background:#090d19;
+ color:white;
+ font-family:Arial,sans-serif;
+ text-align:center;
+}
+
+header{
+ font-size:32px;
+ font-weight:900;
+ margin:20px;
+}
+
 header span{color:#6bcaff}
-.sub{color:#9ba8bd;font-size:12px;letter-spacing:3px}
-.arena{margin:35px auto;padding:22px 12px;background:#151c2e;border:1px solid #303b55;border-radius:22px}
-.teams{display:flex;gap:12px}
-.team{width:50%;padding:20px 5px;border-radius:16px;font-size:22px;font-weight:bold}
-.ice{background:linear-gradient(140deg,#123e6b,#39bfff)}
-.fire{background:linear-gradient(140deg,#702018,#ff5a32)}
-.count{font-size:13px;margin-top:10px}
-.line{height:8px;background:#344057;border-radius:20px;margin:35px 0;position:relative}
+
+.sub{
+ color:#9ba8bd;
+ font-size:12px;
+ letter-spacing:3px;
+}
+
+.arena{
+ margin:35px auto;
+ padding:22px 12px;
+ background:#151c2e;
+ border:1px solid #303b55;
+ border-radius:22px;
+}
+
+.teams{
+ display:flex;
+ gap:12px;
+}
+
+.team{
+ width:50%;
+ padding:20px 5px;
+ border-radius:16px;
+ font-size:22px;
+ font-weight:bold;
+}
+
+.ice{
+ background:linear-gradient(140deg,#123e6b,#39bfff);
+ box-shadow:0 0 20px #168dff55;
+}
+
+.fire{
+ background:linear-gradient(140deg,#702018,#ff5a32);
+ box-shadow:0 0 20px #ff401855;
+}
+
+.count{
+ font-size:13px;
+ margin-top:10px;
+}
+
+.line{
+ height:8px;
+ background:#344057;
+ border-radius:20px;
+ margin:35px 0;
+ position:relative;
+}
+
 .ball{
-position:absolute;
-top:50%;
-left:50%;
-width:30px;
-height:30px;
-border-radius:50%;
-background:white;
-box-shadow:0 0 20px #fff, 0 0 40px #39bfff;
-transform:translate(-50%,-50%);
-animation:spin 1s linear infinite;
+ position:absolute;
+ top:50%;
+ left:50%;
+ width:34px;
+ height:34px;
+ border-radius:50%;
+ background:conic-gradient(
+ #ffffff 0deg,
+ #39bfff 90deg,
+ #168dff 180deg,
+ #ffffff 270deg,
+ #39bfff 360deg
+ );
+ box-shadow:0 0 20px #fff,0 0 40px #39bfff;
+ transform:translate(-50%,-50%);
+ animation:spin 1s linear infinite;
 }
+
 @keyframes spin{
-from{transform:translate(-50%,-50%) rotate(0deg)}
-to{transform:translate(-50%,-50%) rotate(360deg)}
+ from{
+  transform:translate(-50%,-50%) rotate(0deg);
+ }
+ to{
+  transform:translate(-50%,-50%) rotate(360deg);
+ }
 }
-.timer{font-size:45px;font-weight:bold;margin:20px}
-button{width:100%;border:0;border-radius:14px;padding:17px;margin-top:12px;font-size:17px;font-weight:bold;color:white}
-.status{color:#aebbd1;margin:20px 0;min-height:24px}
+
+.timer{
+ font-size:45px;
+ font-weight:bold;
+ margin:20px;
+}
+
+button{
+ width:100%;
+ border:0;
+ border-radius:14px;
+ padding:17px;
+ margin-top:12px;
+ font-size:17px;
+ font-weight:bold;
+ color:white;
+ cursor:pointer;
+}
+
+.iceButton{
+ background:linear-gradient(90deg,#168dff,#43d5ff);
+}
+
+.fireButton{
+ background:linear-gradient(90deg,#e83d28,#ff813c);
+}
+
+.status{
+ color:#aebbd1;
+ margin:20px 0;
+ min-height:24px;
+}
+
+.footer{
+ display:flex;
+ justify-content:space-around;
+ color:#9ca9bd;
+ font-size:12px;
+ margin-top:35px;
+}
 </style>
 </head>
+
 <body>
+
 <header>WIN <span>GRAM</span></header>
 <div class="sub">ICE VS FIRE • PVP ARENA</div>
 
 <div class="arena">
-<div class="teams">
-<div class="team ice">❄️ ICE<div class="count" id="iceCount">0 PLAYERS</div></div>
-<div class="team fire">🔥 FIRE<div class="count" id="fireCount">0 PLAYERS</div></div>
-</div>
-<div class="line"><div class="ball"></div></div>
-<div class="timer" id="timer">15</div>
-<div class="sub">BATTLE COUNTDOWN</div>
+
+ <div class="teams">
+  <div class="team ice">
+   ❄️ ICE
+   <div class="count" id="iceCount">0 PLAYERS</div>
+  </div>
+
+  <div class="team fire">
+   🔥 FIRE
+   <div class="count" id="fireCount">0 PLAYERS</div>
+  </div>
+ </div>
+
+ <div class="line">
+  <div class="ball"></div>
+ </div>
+
+ <div class="timer" id="timer">15</div>
+ <div class="sub">BATTLE COUNTDOWN</div>
+
 </div>
 
-<button onclick="join('ICE')" style="background:#168dff">❄️ JOIN ICE</button>
-<button onclick="join('FIRE')" style="background:#ed4b30">🔥 JOIN FIRE</button>
-<div class="status" id="status">Jamoangni tanla!</div>
+<button class="iceButton" onclick="join('ICE')">
+ ❄️ JOIN ICE
+</button>
+
+<button class="fireButton" onclick="join('FIRE')">
+ 🔥 JOIN FIRE
+</button>
+
+<div class="status" id="status">
+ Jamoangni tanla!
+</div>
+
+<div class="footer">
+ <span>🏠 HOME</span>
+ <span>⚔️ BATTLES</span>
+ <span>🏆 RANK</span>
+ <span>🎁 GIFTS</span>
+</div>
 
 <script>
-let ice=0,fire=0,chosen="";
+let ice=0;
+let fire=0;
+let chosen="";
 let remaining=15;
 
 function join(team){
+
  if(chosen){
-  document.getElementById("status").textContent="Sen allaqachon jamoa tanlagansan!";
+  document.getElementById("status").textContent=
+  "Sen allaqachon jamoa tanlagansan!";
   return;
  }
+
  chosen=team;
- if(team==="ICE")ice++;else fire++;
- document.getElementById("iceCount").textContent=ice+" PLAYERS";
- document.getElementById("fireCount").textContent=fire+" PLAYERS";
- document.getElementById("status").textContent=team+" jamoasiga qo‘shilding!";
+
+ if(team==="ICE"){
+  ice++;
+ }else{
+  fire++;
+ }
+
+ document.getElementById("iceCount").textContent=
+ ice+" PLAYERS";
+
+ document.getElementById("fireCount").textContent=
+ fire+" PLAYERS";
+
+ document.getElementById("status").textContent=
+ team+" jamoasiga qo‘shilding!";
 }
 
-const timer=setInterval(()=>{
+const timer=setInterval(function(){
+
  remaining--;
- document.getElementById("timer").textContent=remaining;
+
+ document.getElementById("timer").textContent=
+ remaining;
+
  if(remaining<=0){
+
   clearInterval(timer);
-  document.getElementById("status").textContent="DEMO JANG YAKUNLANDI!";
+
+  document.getElementById("status").textContent=
+  "DEMO JANG YAKUNLANDI!";
+
  }
+
 },1000);
 </script>
+
 </body>
 </html>
