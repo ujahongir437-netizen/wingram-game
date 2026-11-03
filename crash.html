@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WIN GRAM ROCKET CRASH</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#080d19;color:white;
+ font-family:Arial,sans-serif;text-align:center;padding:18px
+}
+header{font-size:30px;font-weight:900;margin:15px}
+header span{color:#42caff}
+.subtitle{color:#8b9bb5;font-size:12px;letter-spacing:3px}
+.game{
+ margin:25px auto;padding:20px 12px;
+ background:linear-gradient(160deg,#14233c,#101525);
+ border:1px solid #263d5b;border-radius:22px;
+}
+.multiplier{
+ font-size:55px;font-weight:900;color:#50d5ff;
+ margin:25px 0;
+ text-shadow:0 0 20px #168dff;
+}
+.sky{
+ height:220px;position:relative;overflow:hidden;
+ background:radial-gradient(ellipse at bottom,#173b61,#0b1425 65%);
+ border-radius:16px;
+}
+.rocket{
+ position:absolute;bottom:12px;left:12%;
+ font-size:48px;
+ transform:rotate(-35deg);
+ filter:drop-shadow(0 0 15px #39bfff);
+ transition:left .1s, bottom .1s;
+}
+.trail{
+ position:absolute;bottom:28px;left:5%;
+ width:0;height:4px;
+ background:linear-gradient(90deg,transparent,#39bfff);
+ border-radius:10px;
+}
+.status{margin:20px;color:#aebbd1;min-height:22px}
+button{
+ width:100%;padding:17px;border:0;border-radius:13px;
+ margin-top:12px;font-size:17px;font-weight:bold;color:white;
+}
+.start{background:linear-gradient(90deg,#147ee9,#35caff)}
+.cash{background:linear-gradient(90deg,#08a76c,#26d69a)}
+button:disabled{opacity:.45}
+.balance{margin:20px;color:#9fb1c9}
+</style>
+</head>
+<body>
+
+<header>WIN <span>GRAM</span></header>
+<div class="subtitle">🚀 ROCKET CRASH</div>
+
+<div class="game">
+ <div class="multiplier" id="multiplier">1.00x</div>
+ <div class="sky">
+  <div class="trail" id="trail"></div>
+  <div class="rocket" id="rocket">🚀</div>
+ </div>
+ <div class="status" id="status">START tugmasini bos!</div>
+</div>
+
+<div class="balance">DEMO BALANCE: <b id="balance">1000</b> COINS</div>
+
+<button class="start" id="start" onclick="startGame()">🚀 START</button>
+<button class="cash" id="cash" onclick="cashOut()" disabled>💰 CASH OUT</button>
+
+<script>
+let balance=1000;
+let multiplier=1;
+let active=false;
+let cashed=false;
+let crashPoint=0;
+let gameTimer=null;
+let startTime=0;
+
+const $=id=>document.getElementById(id);
+
+function startGame(){
+ if(active)return;
+
+ multiplier=1;
+ cashed=false;
+ active=true;
+
+ crashPoint=1.2+Math.random()*8.8;
+ startTime=Date.now();
+
+ $("multiplier").textContent="1.00x";
+ $("status").textContent="🚀 RAKETA UCHMOQDA!";
+ $("rocket").style.left="12%";
+ $("rocket").style.bottom="12px";
+ $("trail").style.width="0";
+
+ $("start").disabled=true;
+ $("cash").disabled=false;
+
+ gameTimer=setInterval(updateGame,50);
+}
+
+function updateGame(){
+ let elapsed=(Date.now()-startTime)/1000;
+ multiplier=1+elapsed*0.35+elapsed*elapsed*0.035;
+
+ $("multiplier").textContent=multiplier.toFixed(2)+"x";
+
+ let progress=Math.min(elapsed/12,1);
+ $("rocket").style.left=(12+progress*70)+"%";
+ $("rocket").style.bottom=(12+progress*125)+"px";
+ $("trail").style.width=(progress*65)+"%";
+
+ if(multiplier>=crashPoint){
+  finishCrash();
+ }
+}
+
+function cashOut(){
+ if(!active||cashed)return;
+
+ cashed=true;
+ active=false;
+ clearInterval(gameTimer);
+
+ let win=Math.floor(100*multiplier);
+ balance+=win;
+
+ $("balance").textContent=balance;
+ $("status").textContent="🎉 CASH OUT! +"+win+" COINS";
+ $("cash").disabled=true;
+ $("start").disabled=false;
+}
+
+function finishCrash(){
+ active=false;
+ clearInterval(gameTimer);
+
+ $("multiplier").textContent=multiplier.toFixed(2)+"x";
+ $("status").textContent="💥 CRASH! RAKETA PORTLADI!";
+ $("cash").disabled=true;
+ $("start").disabled=false;
+ $("rocket").textContent="💥";
+}
+</script>
+
+</body>
+</html>
