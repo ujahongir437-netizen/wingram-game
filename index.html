@@ -3,126 +3,59 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WIN GRAM TvT</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WIN GRAM</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{box-sizing:border-box}
-body{margin:0;padding:18px;background:#0b1020;color:white;font-family:Arial;text-align:center}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
-.logo{font-size:24px;font-weight:900;color:#a78bfa}
-.balance{background:#202a40;padding:12px;border-radius:14px}
-h1{font-size:30px}
-.panel{background:#151f35;border:1px solid #293a59;border-radius:20px;padding:20px;margin:16px 0}
-.teams{display:flex;gap:12px}
-.team{flex:1;padding:25px 5px;border-radius:16px;font-size:23px;font-weight:bold;border:3px solid transparent;cursor:pointer}
-.ice{background:#123e58;color:#64d8ff}
-.fire{background:#542317;color:#ff9b50}
-.selected{border-color:white;box-shadow:0 0 15px #fff6}
-button{width:100%;padding:16px;border:0;border-radius:13px;background:#8055ed;color:white;font-size:17px;font-weight:bold;margin-top:15px}
-button:disabled{opacity:.4}
-#timer{font-size:65px;font-weight:bold;color:#51e5ff;margin:15px}
-#status{font-size:18px;color:#ffd36b;min-height:28px}
-.counts{display:flex;justify-content:space-around;font-size:19px;margin-top:20px}
-#battle{display:none}
-#result{font-size:25px;font-weight:bold;margin:20px}
-.small{color:#9ca9c2;font-size:13px}
+body{margin:0;background:#10111b;color:white;font-family:Arial,sans-serif;text-align:center;padding:20px}
+h1{font-size:32px;margin:20px 0 5px}
+.sub{color:#aaa;margin-bottom:30px}
+.teams{display:flex;gap:12px;margin:25px 0}
+.team{flex:1;padding:28px 8px;border-radius:18px;border:2px solid #333;background:#1b1d2b;font-size:23px;font-weight:bold;cursor:pointer}
+.ice{color:#45caff}
+.fire{color:#ff6848}
+.selected{border-color:#fff;box-shadow:0 0 15px #777}
+button{width:100%;padding:17px;border:0;border-radius:13px;background:#795cff;color:white;font-size:18px;font-weight:bold;margin-top:15px}
+#status{margin-top:22px;color:#bbb;min-height:45px}
+.small{color:#777;font-size:12px;margin-top:30px}
 </style>
 </head>
 <body>
-<header>
- <div class="logo">✦ WIN GRAM</div>
- <div class="balance">💎 0.000 TON</div>
-</header>
+<h1>🔥 WIN GRAM</h1>
+<div class="sub">ICE vs FIRE BATTLE</div>
 
-<h1>❄️ ICE VS FIRE 🔥</h1>
-<p class="small">CHOOSE YOUR TEAM • FIGHT • WIN</p>
-
-<div class="panel" id="lobby">
- <h2>Jamoangni tanla</h2>
- <div class="teams">
-  <div class="team ice" id="ice" onclick="choose('ICE')">❄️<br>ICE</div>
-  <div class="team fire" id="fire" onclick="choose('FIRE')">🔥<br>FIRE</div>
- </div>
- <div class="counts">
-  <div>❄️ ICE: <b id="iceCount">0</b></div>
-  <div>🔥 FIRE: <b id="fireCount">0</b></div>
- </div>
- <button id="join" onclick="joinGame()" disabled>JOIN BATTLE</button>
- <div id="status">Avval jamoani tanlang</div>
- <div id="timer">15</div>
- <p class="small">Jang boshlanishigacha qolgan vaqt</p>
+<div class="teams">
+  <div class="team ice" id="ice" onclick="choose('ICE')">❄️ ICE</div>
+  <div class="team fire" id="fire" onclick="choose('FIRE')">🔥 FIRE</div>
 </div>
 
-<div class="panel" id="battle" >
- <h2>⚔️ BATTLE STARTED!</h2>
- <div class="counts">
-  <div>❄️ ICE: <b id="battleIce">0</b></div>
-  <div>🔥 FIRE: <b id="battleFire">0</b></div>
- </div>
- <div id="result">Jang davom etmoqda...</div>
- <button onclick="location.reload()">YANGI JANG</button>
-</div>
-
-<p class="small">WIN GRAM • TEAM BATTLE</p>
+<button onclick="joinBattle()">JOIN BATTLE</button>
+<div id="status">Jamoangni tanla!</div>
+<div class="small">WIN GRAM • BATTLE ARENA</div>
 
 <script>
-const tg=window.Telegram?.WebApp;
-if(tg){tg.ready();tg.expand();}
+const SUPABASE_URL = "https://kaoysmtcufrubckjpksa.supabase.co";
+const SUPABASE_KEY = "sb_publishable_uvLZfr7u9AVdBSCexxgjdw_pRWVOCV3";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-let selected='';
-let joined=false;
-let ice=0,fire=0;
-let seconds=15;
-let finished=false;
+let selectedTeam = "";
 
 function choose(team){
- if(joined||finished)return;
- selected=team;
- document.getElementById('ice').classList.toggle('selected',team==='ICE');
- document.getElementById('fire').classList.toggle('selected',team==='FIRE');
- document.getElementById('join').disabled=false;
- document.getElementById('status').textContent=team+' jamoasi tanlandi!';
+  selectedTeam = team;
+  document.getElementById("ice").classList.toggle("selected",team==="ICE");
+  document.getElementById("fire").classList.toggle("selected",team==="FIRE");
+  document.getElementById("status").textContent = team+" jamoasini tanlading!";
 }
 
-function joinGame(){
- if(!selected||joined||finished)return;
- joined=true;
- if(selected==='ICE')ice++;
- else fire++;
- document.getElementById('iceCount').textContent=ice;
- document.getElementById('fireCount').textContent=fire;
- document.getElementById('join').disabled=true;
- document.getElementById('status').textContent='Jamoaga qo‘shildingiz! Jang kutilmoqda.';
-}
-
-const countdown=setInterval(()=>{
- if(finished)return;
- seconds--;
- document.getElementById('timer').textContent=seconds;
- if(seconds<=0){
-  clearInterval(countdown);
-  startBattle();
- }
-},1000);
-
-function startBattle(){
- finished=true;
- document.getElementById('lobby').style.display='none';
- document.getElementById('battle').style.display='block';
-
- // Faqat mahalliy demo natijasi.
- let demoIce=ice+Math.floor(Math.random()*10)+1;
- let demoFire=fire+Math.floor(Math.random()*10)+1;
-
- document.getElementById('battleIce').textContent=demoIce;
- document.getElementById('battleFire').textContent=demoFire;
-
- let winner=demoIce===demoFire?'DURRANG!':demoIce>demoFire?'❄️ ICE G‘OLIB!':'🔥 FIRE G‘OLIB!';
- document.getElementById('result').textContent=winner;
- if(tg)tg.HapticFeedback.impactOccurred('heavy');
+function joinBattle(){
+  if(!selectedTeam){
+    document.getElementById("status").textContent="Avval ICE yoki FIRE ni tanla!";
+    return;
+  }
+  document.getElementById("status").textContent =
+    selectedTeam+" tanlandi. Serverdagi haqiqiy jang uchun xavfsiz matchmaking hali sozlanmoqda.";
 }
 </script>
 </body>
- </html>
- 
+</html>
