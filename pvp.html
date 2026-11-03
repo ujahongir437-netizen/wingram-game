@@ -18,7 +18,22 @@ header span{color:#6bcaff}
 .fire{background:linear-gradient(140deg,#702018,#ff5a32)}
 .count{font-size:13px;margin-top:10px}
 .line{height:8px;background:#344057;border-radius:20px;margin:35px 0;position:relative}
-.ball{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;background:white;box-shadow:0 0 20px #fff}
+.ball{
+position:absolute;
+top:50%;
+left:50%;
+width:30px;
+height:30px;
+border-radius:50%;
+background:white;
+box-shadow:0 0 20px #fff, 0 0 40px #39bfff;
+transform:translate(-50%,-50%);
+animation:spin 1s linear infinite;
+}
+@keyframes spin{
+from{transform:translate(-50%,-50%) rotate(0deg)}
+to{transform:translate(-50%,-50%) rotate(360deg)}
+}
 .timer{font-size:45px;font-weight:bold;margin:20px}
 button{width:100%;border:0;border-radius:14px;padding:17px;margin-top:12px;font-size:17px;font-weight:bold;color:white}
 .status{color:#aebbd1;margin:20px 0;min-height:24px}
